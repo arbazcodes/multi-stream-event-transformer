@@ -17,27 +17,6 @@ A PyTorch implementation of a multi-stream transformer architecture for structur
 
 ---
 
-## Table of Contents
-
-- [Motivation](#motivation)
-- [Architecture](#architecture)
-  - [The State–Event Cycle](#the-stateevent-cycle)
-  - [Multi-Stream Encoders](#multi-stream-encoders)
-  - [Cross-Attention Decoder](#cross-attention-decoder)
-  - [Autoregressive Generation](#autoregressive-generation)
-- [Applications](#applications)
-- [Project Structure](#project-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-  - [Training](#training)
-  - [Monitoring](#monitoring)
-  - [Inference](#inference)
-- [Configuration](#configuration)
-- [Docker](#docker)
-- [Technical Details](#technical-details)
-- [Roadmap](#roadmap)
-
----
 
 ## Motivation
 
@@ -46,6 +25,34 @@ Most transformer research is built around sequences of tokens — words, subword
 Consider an employee clocking in. That single event carries: who did it, where, under which job code, which cost code, whether it was timesheet-approved, and when. Flattening these into a single embedding discards the relational structure between them.
 
 This project keeps each attribute stream separate, encoding it independently through its own transformer, then fusing all streams in a shared decoder. The result is a model that can learn both within-stream temporal patterns and cross-stream dependencies — for example, that a particular employee tends to pick up specific job codes at specific locations on certain days.
+
+The model is designed around three core use cases, each of which follows from the state–event cycle:
+
+<div align="center">
+<img src="assets/applications_diagram.svg" alt="Applications Overview" width="90%"/>
+</div>
+
+### Semantic Substitute Search
+
+Each employee's event history is encoded into a state vector — a dense representation of their behavioral profile. These vectors are stored in a searchable index. When a substitute is needed, a query (e.g., *"need someone to cover a morning shift at Lincoln High, Calculus 2"*) is embedded and matched against stored state vectors by similarity.
+
+Unlike keyword search over résumé fields, this approach captures behavioral patterns: who actually shows up, who is reliable at specific locations, who has worked specific job codes recently. The state vector reflects what an employee *does*, not just what they list.
+
+### Anomaly and Fraud Detection
+
+Once each employee has a behavioral fingerprint — a characteristic distribution over states through time — deviations become detectable. The model can flag:
+
+- Punch patterns that are statistically inconsistent with an employee's history
+- Impossible overlapping events (clocking in at two locations simultaneously)
+- Timesheet submissions that deviate from approved shift structure
+- Accounts whose event distributions resemble known fraud profiles
+
+The representations also serve as training signal for a downstream classifier, where labeled fraud cases can be used to fine-tune a detection head on top of the frozen encoder.
+
+### Workforce Forecasting
+
+Given a partial event history, the autoregressive decoder predicts the most likely continuation — enabling estimates of weekly hours, shift acceptance probability, or callout risk. These predictions can be aggregated across a workforce to produce staffing forecasts.
+
 
 ---
 
@@ -78,11 +85,11 @@ The five encoder streams are:
 
 | Stream | Field(s) | What it captures |
 |--------|----------|-----------------|
-| 👤 **Employee** | `ActorRecordId`, `RecipientRecordId` | *Who* was involved in the event |
-| 📍 **Location** | `LocationRecordId` | *Where* the event occurred |
-| 🏢 **Cost Code** | `CostCodeRecordId` | *Which project or department* |
-| 💼 **Job Code** | `JobCodeRecordId` | *What role or position* |
-| 🗂️ **Event Type** | `EventType` | *What kind* of event it was |
+|  **Employee** | `ActorRecordId`, `RecipientRecordId` | *Who* was involved in the event |
+| **Location** | `LocationRecordId` | *Where* the event occurred |
+| **Cost Code** | `CostCodeRecordId` | *Which project or department* |
+| **Job Code** | `JobCodeRecordId` | *What role or position* |
+| **Event Type** | `EventType` | *What kind* of event it was |
 
 Each encoder is a standard transformer encoder stack (self-attention + FFN + layer norm + residuals), configured with 4 layers by default. All streams share the same positional encoding scheme but maintain independent weights — allowing each to develop representations appropriate for its own vocabulary and distributional patterns.
 
@@ -123,37 +130,6 @@ generated = model.generate(
 ```
 
 Temperature scaling is applied to the logits before sampling, giving control over the diversity–fidelity tradeoff at inference time.
-
----
-
-## Applications
-
-The model is designed around three core use cases, each of which follows from the state–event cycle:
-
-<div align="center">
-<img src="assets/applications_diagram.svg" alt="Applications Overview" width="90%"/>
-</div>
-
-### Semantic Substitute Search
-
-Each employee's event history is encoded into a state vector — a dense representation of their behavioral profile. These vectors are stored in a searchable index. When a substitute is needed, a query (e.g., *"need someone to cover a morning shift at Lincoln High, Calculus 2"*) is embedded and matched against stored state vectors by similarity.
-
-Unlike keyword search over résumé fields, this approach captures behavioral patterns: who actually shows up, who is reliable at specific locations, who has worked specific job codes recently. The state vector reflects what an employee *does*, not just what they list.
-
-### Anomaly and Fraud Detection
-
-Once each employee has a behavioral fingerprint — a characteristic distribution over states through time — deviations become detectable. The model can flag:
-
-- Punch patterns that are statistically inconsistent with an employee's history
-- Impossible overlapping events (clocking in at two locations simultaneously)
-- Timesheet submissions that deviate from approved shift structure
-- Accounts whose event distributions resemble known fraud profiles
-
-The representations also serve as training signal for a downstream classifier, where labeled fraud cases can be used to fine-tune a detection head on top of the frozen encoder.
-
-### Workforce Forecasting
-
-Given a partial event history, the autoregressive decoder predicts the most likely continuation — enabling estimates of weekly hours, shift acceptance probability, or callout risk. These predictions can be aggregated across a workforce to produce staffing forecasts.
 
 ---
 
@@ -351,79 +327,6 @@ docker-compose up --build
 ```
 
 Training starts automatically. TensorBoard is available at `http://localhost:6006`. Checkpoints are persisted to the host through the shared volume, so they survive container restarts.
-
----
-
-## Technical Details
-
-### Predicted Output Fields
-
-The model predicts 17 categorical fields per timestep:
-
-| Category | Fields |
-|----------|--------|
-| Core event | `EventType`, `ActorRecordId`, `RecipientRecordId` |
-| Context | `LocationRecordId`, `CostCodeRecordId`, `JobCodeRecordId` |
-| Metadata | `IsTimesheet`, `HoursWorked`, `ApprovedByManagerUserRecordId` |
-| Event time | `Time_Event_Month`, `Time_Event_Day`, `Time_Event_Hour`, `Time_Event_Minute` |
-| Reference time | `Time_Reference_Month`, `Time_Reference_Day`, `Time_Reference_Hour`, `Time_Reference_Minute` |
-
-Each field has its own output head (linear projection to vocabulary size), and the training loss is the sum of cross-entropy losses across all fields.
-
-### Design Decisions
-
-**Separate encoders over a joint embedding.** Concatenating all fields at the input and projecting through a single encoder is simpler, but conflates streams that have very different vocabulary sizes, distributional properties, and temporal dynamics. Keeping them separate lets each encoder specialize, and makes stream-level contribution to predictions interpretable.
-
-**Summed cross-attention over concatenated memory.** Concatenating all encoder outputs before cross-attention scales quadratically with the number of streams. Summing independent cross-attention outputs keeps complexity linear in the number of streams while preserving the ability to weight each encoder's contribution differently per query.
-
-**Learned positional encodings.** Sinusoidal encodings assume a specific frequency structure that may not match event sequence statistics. Learned encodings let the model determine what positional information is actually useful for this domain.
-
-### Extending to Real Data
-
-The `EventsLoader` class in `data/events_loader.py` generates synthetic data with configurable temporal correlations. To plug in real data, subclass it and override `__getitem__`:
-
-```python
-class RealEventsLoader(EventsLoader):
-    def __init__(self, data_path: str, **kwargs):
-        super().__init__(**kwargs)
-        self.df = pd.read_csv(data_path, parse_dates=['timestamp'])
-
-    def __getitem__(self, idx: int) -> dict:
-        row = self.df.iloc[idx]
-        return {
-            'event_type': torch.tensor(row['event_type_id'], dtype=torch.long),
-            'actor':      torch.tensor(row['actor_id'],      dtype=torch.long),
-            'location':   torch.tensor(row['location_id'],   dtype=torch.long),
-            'cost_code':  torch.tensor(row['cost_code_id'],  dtype=torch.long),
-            'job_code':   torch.tensor(row['job_code_id'],   dtype=torch.long),
-        }
-```
-
----
-
-## Roadmap
-
-- [x] Multi-stream encoder / cross-attention decoder
-- [x] Autoregressive generation with temperature control
-- [x] Full training pipeline with warmup, grad clipping, checkpointing
-- [x] TensorBoard integration (loss, per-stream metrics, LR schedule)
-- [x] Docker containerization
-- [x] Synthetic data generator with temporal correlations
-- [x] Unit test suite
-- [ ] Beam search decoding
-- [ ] Attention map visualization per stream
-- [ ] Real data adapter (CSV / JSON / database)
-- [ ] FastAPI inference endpoint
-- [ ] ONNX export for production deployment
-- [ ] Downstream classification head for fraud detection fine-tuning
-
----
-
-## Further Reading
-
-- [Attention Is All You Need](https://arxiv.org/abs/1706.03762) — the original transformer paper
-- [Attention (machine learning)](https://en.wikipedia.org/wiki/Attention_(machine_learning)) — Wikipedia overview
-- [Hidden Markov Models](https://en.wikipedia.org/wiki/Hidden_Markov_model) — the classical predecessor to learned sequence modeling
 
 ---
 
