@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="200" viewBox="0 0 800 200">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#4B5563"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3B82F6"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#EF4444"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10B981"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="200" rx="12" fill="#0F1117"/>
+
+  <!-- State (t) box -->
+  <rect x="40" y="70" width="140" height="60" rx="8" fill="#1E3A5F" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="110" y="96" font-family="monospace" font-size="11" fill="#93C5FD" text-anchor="middle" font-weight="600">State</text>
+  <text x="110" y="114" font-family="monospace" font-size="10" fill="#60A5FA" text-anchor="middle">(entity at time t)</text>
+
+  <!-- Arrow 1 -->
+  <line x1="182" y1="100" x2="238" y2="100" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Event box -->
+  <rect x="240" y="70" width="140" height="60" rx="8" fill="#3B1F1F" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="310" y="96" font-family="monospace" font-size="11" fill="#FCA5A5" text-anchor="middle" font-weight="600">Event</text>
+  <text x="310" y="114" font-family="monospace" font-size="10" fill="#F87171" text-anchor="middle">(something occurs)</text>
+
+  <!-- Arrow 2 -->
+  <line x1="382" y1="100" x2="438" y2="100" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- State (t+1) box -->
+  <rect x="440" y="70" width="140" height="60" rx="8" fill="#064E3B" stroke="#10B981" stroke-width="1.5"/>
+  <text x="510" y="96" font-family="monospace" font-size="11" fill="#6EE7B7" text-anchor="middle" font-weight="600">State</text>
+  <text x="510" y="114" font-family="monospace" font-size="10" fill="#34D399" text-anchor="middle">(updated at t+1)</text>
+
+  <!-- Arrow 3 -->
+  <line x1="582" y1="100" x2="638" y2="100" stroke="#4B5563" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Ellipsis -->
+  <text x="660" y="105" font-family="monospace" font-size="20" fill="#4B5563" text-anchor="middle">···</text>
+
+  <!-- Curved feedback arrow below -->
+  <path d="M 510 132 Q 310 175 110 132" fill="none" stroke="#374151" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arrow)"/>
+  <text x="310" y="168" font-family="monospace" font-size="9" fill="#6B7280" text-anchor="middle">each new event updates the entity's representation</text>
+
+  <!-- Title -->
+  <text x="400" y="24" font-family="monospace" font-size="12" fill="#9CA3AF" text-anchor="middle" font-weight="700" letter-spacing="2">THE STATE — EVENT CYCLE</text>
+  <line x1="180" y1="30" x2="310" y2="30" stroke="#374151" stroke-width="0.5"/>
+  <line x1="490" y1="30" x2="620" y2="30" stroke="#374151" stroke-width="0.5"/>
+</svg>

@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="520" viewBox="0 0 860 520">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#4B5563"/>
+    </marker>
+    <marker id="arr-w" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#6B7280"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="860" height="520" rx="14" fill="#0D0D14"/>
+
+  <!-- ── TITLE ── -->
+  <text x="430" y="34" font-family="monospace" font-size="13" fill="#9CA3AF" text-anchor="middle" font-weight="700" letter-spacing="2">MULTI-STREAM TRANSFORMER ARCHITECTURE</text>
+  <line x1="60" y1="44" x2="800" y2="44" stroke="#1F2937" stroke-width="1"/>
+
+  <!-- ── INPUT FIELDS (left column) ── -->
+  <rect x="28" y="60" width="148" height="340" rx="8" fill="#111827" stroke="#1F2937" stroke-width="1"/>
+  <text x="102" y="80" font-family="monospace" font-size="9" fill="#6B7280" text-anchor="middle" font-weight="700" letter-spacing="1">INPUT FIELDS</text>
+  <!-- field rows -->
+  <rect x="38" y="88" width="128" height="18" rx="3" fill="#1F2937"/>
+  <text x="102" y="101" font-family="monospace" font-size="9" fill="#D1D5DB" text-anchor="middle">EventType</text>
+  <rect x="38" y="110" width="128" height="18" rx="3" fill="#1a2235"/>
+  <text x="102" y="123" font-family="monospace" font-size="9" fill="#93C5FD" text-anchor="middle">ActorRecordId</text>
+  <rect x="38" y="132" width="128" height="18" rx="3" fill="#1a2235"/>
+  <text x="102" y="145" font-family="monospace" font-size="9" fill="#93C5FD" text-anchor="middle">RecipientRecordId</text>
+  <rect x="38" y="154" width="128" height="18" rx="3" fill="#162a20"/>
+  <text x="102" y="167" font-family="monospace" font-size="9" fill="#6EE7B7" text-anchor="middle">LocationRecordId</text>
+  <rect x="38" y="176" width="128" height="18" rx="3" fill="#1e1a2d"/>
+  <text x="102" y="189" font-family="monospace" font-size="9" fill="#C4B5FD" text-anchor="middle">CostCodeRecordId</text>
+  <rect x="38" y="198" width="128" height="18" rx="3" fill="#2a1e10"/>
+  <text x="102" y="211" font-family="monospace" font-size="9" fill="#FCD34D" text-anchor="middle">JobCodeRecordId</text>
+  <rect x="38" y="220" width="128" height="18" rx="3" fill="#1F2937"/>
+  <text x="102" y="233" font-family="monospace" font-size="9" fill="#9CA3AF" text-anchor="middle">ApprovedByManager</text>
+  <rect x="38" y="242" width="128" height="18" rx="3" fill="#1F2937"/>
+  <text x="102" y="255" font-family="monospace" font-size="9" fill="#9CA3AF" text-anchor="middle">IsTimesheet</text>
+  <rect x="38" y="264" width="128" height="18" rx="3" fill="#1F2937"/>
+  <text x="102" y="277" font-family="monospace" font-size="9" fill="#9CA3AF" text-anchor="middle">HoursWorked</text>
+  <rect x="38" y="286" width="128" height="18" rx="3" fill="#1F2937"/>
+  <text x="102" y="299" font-family="monospace" font-size="9" fill="#9CA3AF" text-anchor="middle">Time_Event_Month</text>
+  <rect x="38" y="308" width="128" height="18" rx="3" fill="#1F2937"/>
+  <text x="102" y="321" font-family="monospace" font-size="9" fill="#9CA3AF" text-anchor="middle">Time_Event_Day</text>
+  <rect x="38" y="330" width="128" height="18" rx="3" fill="#1F2937"/>
+  <text x="102" y="343" font-family="monospace" font-size="9" fill="#9CA3AF" text-anchor="middle">Time_Event_Hour</text>
+  <rect x="38" y="352" width="128" height="18" rx="3" fill="#1F2937"/>
+  <text x="102" y="365" font-family="monospace" font-size="9" fill="#9CA3AF" text-anchor="middle">Time_Reference_...</text>
+
+  <!-- Route arrow -->
+  <line x1="178" y1="230" x2="210" y2="230" stroke="#374151" stroke-width="1.5" marker-end="url(#arr)"/>
+  <text x="194" y="224" font-family="monospace" font-size="7" fill="#4B5563" text-anchor="middle">route</text>
+
+  <!-- ── SHARED EMBEDDING + POS ENC ── -->
+  <rect x="212" y="60" width="100" height="340" rx="8" fill="#111827" stroke="#1F2937" stroke-width="1"/>
+  <text x="262" y="82" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle" font-weight="700">SHARED</text>
+  <!-- Embedding block -->
+  <rect x="222" y="90" width="80" height="36" rx="5" fill="#1F2937" stroke="#374151" stroke-width="1"/>
+  <text x="262" y="108" font-family="monospace" font-size="9" fill="#D1D5DB" text-anchor="middle" font-weight="600">Embedding</text>
+  <text x="262" y="120" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle">d_model=128</text>
+  <!-- Pos enc block -->
+  <rect x="222" y="136" width="80" height="36" rx="5" fill="#1F2937" stroke="#374151" stroke-width="1"/>
+  <text x="262" y="153" font-family="monospace" font-size="9" fill="#D1D5DB" text-anchor="middle" font-weight="600">Positional</text>
+  <text x="262" y="165" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle">Encoding</text>
+
+  <!-- down arrow in shared -->
+  <line x1="262" y1="174" x2="262" y2="188" stroke="#374151" stroke-width="1" marker-end="url(#arr)"/>
+  <text x="262" y="202" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle">per-stream</text>
+  <text x="262" y="213" font-family="monospace" font-size="8" fill="#6B7280" text-anchor="middle">routing ↓</text>
+
+  <!-- Route arrows to encoders -->
+  <line x1="313" y1="150" x2="336" y2="128" stroke="#1F2937" stroke-width="1" marker-end="url(#arr-w)"/>
+  <line x1="313" y1="180" x2="336" y2="198" stroke="#1F2937" stroke-width="1" marker-end="url(#arr-w)"/>
+  <line x1="313" y1="210" x2="336" y2="268" stroke="#1F2937" stroke-width="1" marker-end="url(#arr-w)"/>
+  <line x1="313" y1="230" x2="336" y2="338" stroke="#1F2937" stroke-width="1" marker-end="url(#arr-w)"/>
+  <line x1="313" y1="260" x2="336" y2="408" stroke="#1F2937" stroke-width="1" marker-end="url(#arr-w)"/>
+
+  <!-- ── ENCODER STREAMS ── -->
+
+  <!-- Stream 1: Employee -->
+  <rect x="338" y="68" width="88" height="120" rx="8" fill="#0D1B30" stroke="#3B82F6" stroke-width="1.5"/>
+  <text x="382" y="85" font-family="monospace" font-size="9" fill="#60A5FA" text-anchor="middle" font-weight="700">👤 EMPLOYEE</text>
+  <text x="382" y="96" font-family="monospace" font-size="8" fill="#3B82F6" text-anchor="middle">Encoder</text>
+  <rect x="348" y="102" width="68" height="14" rx="3" fill="#1a2d4a" stroke="#2563EB" stroke-width="0.5"/>
+  <text x="382" y="113" font-family="monospace" font-size="8" fill="#93C5FD" text-anchor="middle">Self-Attn</text>
+  <rect x="348" y="119" width="68" height="14" rx="3" fill="#1a2d4a" stroke="#2563EB" stroke-width="0.5"/>
+  <text x="382" y="130" font-family="monospace" font-size="8" fill="#93C5FD" text-anchor="middle">FFN</text>
+  <rect x="348" y="136" width="68" height="14" rx="3" fill="#1a2d4a" stroke="#2563EB" stroke-width="0.5"/>
+  <text x="382" y="147" font-family="monospace" font-size="8" fill="#93C5FD" text-anchor="middle">× 4 layers</text>
+  <text x="382" y="179" font-family="monospace" font-size="8" fill="#374151" text-anchor="middle">E1…En</text>
+
+  <!-- Stream 2: Location -->
+  <rect x="338" y="138" width="88" height="120" rx="8" fill="#0A2018" stroke="#10B981" stroke-width="1.5"/>
+  <text x="382" y="155" font-family="monospace" font-size="9" fill="#34D399" text-anchor="middle" font-weight="700">📍 LOCATION</text>
+  <text x="382" y="166" font-family="monospace" font-size="8" fill="#10B981" text-anchor="middle">Encoder</text>
+  <rect x="348" y="172" width="68" height="14" rx="3" fill="#0f2d1e" stroke="#059669" stroke-width="0.5"/>
+  <text x="382" y="183" font-family="monospace" font-size="8" fill="#6EE7B7" text-anchor="middle">Self-Attn</text>
+  <rect x="348" y="189" width="68" height="14" rx="3" fill="#0f2d1e" stroke="#059669" stroke-width="0.5"/>
+  <text x="382" y="200" font-family="monospace" font-size="8" fill="#6EE7B7" text-anchor="middle">FFN</text>
+  <rect x="348" y="206" width="68" height="14" rx="3" fill="#0f2d1e" stroke="#059669" stroke-width="0.5"/>
+  <text x="382" y="217" font-family="monospace" font-size="8" fill="#6EE7B7" text-anchor="middle">× 4 layers</text>
+  <text x="382" y="249" font-family="monospace" font-size="8" fill="#374151" text-anchor="middle">L1…Ln</text>
+
+  <!-- Stream 3: Cost Code -->
+  <rect x="338" y="208" width="88" height="120" rx="8" fill="#1a1030" stroke="#8B5CF6" stroke-width="1.5"/>
+  <text x="382" y="225" font-family="monospace" font-size="8" fill="#A78BFA" text-anchor="middle" font-weight="700">🏢 COST CODE</text>
+  <text x="382" y="237" font-family="monospace" font-size="8" fill="#7C3AED" text-anchor="middle">Encoder</text>
+  <rect x="348" y="243" width="68" height="14" rx="3" fill="#251545" stroke="#7C3AED" stroke-width="0.5"/>
+  <text x="382" y="254" font-family="monospace" font-size="8" fill="#C4B5FD" text-anchor="middle">Self-Attn</text>
+  <rect x="348" y="260" width="68" height="14" rx="3" fill="#251545" stroke="#7C3AED" stroke-width="0.5"/>
+  <text x="382" y="271" font-family="monospace" font-size="8" fill="#C4B5FD" text-anchor="middle">FFN</text>
+  <rect x="348" y="277" width="68" height="14" rx="3" fill="#251545" stroke="#7C3AED" stroke-width="0.5"/>
+  <text x="382" y="288" font-family="monospace" font-size="8" fill="#C4B5FD" text-anchor="middle">× 4 layers</text>
+  <text x="382" y="319" font-family="monospace" font-size="8" fill="#374151" text-anchor="middle">CC1…CCn</text>
+
+  <!-- Stream 4: Job Code -->
+  <rect x="338" y="278" width="88" height="120" rx="8" fill="#251800" stroke="#F59E0B" stroke-width="1.5"/>
+  <text x="382" y="295" font-family="monospace" font-size="8" fill="#FCD34D" text-anchor="middle" font-weight="700">💼 JOB CODE</text>
+  <text x="382" y="307" font-family="monospace" font-size="8" fill="#D97706" text-anchor="middle">Encoder</text>
+  <rect x="348" y="313" width="68" height="14" rx="3" fill="#332200" stroke="#B45309" stroke-width="0.5"/>
+  <text x="382" y="324" font-family="monospace" font-size="8" fill="#FDE68A" text-anchor="middle">Self-Attn</text>
+  <rect x="348" y="330" width="68" height="14" rx="3" fill="#332200" stroke="#B45309" stroke-width="0.5"/>
+  <text x="382" y="341" font-family="monospace" font-size="8" fill="#FDE68A" text-anchor="middle">FFN</text>
+  <rect x="348" y="347" width="68" height="14" rx="3" fill="#332200" stroke="#B45309" stroke-width="0.5"/>
+  <text x="382" y="358" font-family="monospace" font-size="8" fill="#FDE68A" text-anchor="middle">× 4 layers</text>
+  <text x="382" y="389" font-family="monospace" font-size="8" fill="#374151" text-anchor="middle">JC1…JCn</text>
+
+  <!-- Stream 5: Event Type -->
+  <rect x="338" y="348" width="88" height="120" rx="8" fill="#2a0a0a" stroke="#EF4444" stroke-width="1.5"/>
+  <text x="382" y="365" font-family="monospace" font-size="8" fill="#F87171" text-anchor="middle" font-weight="700">🗂️ EVENT TYPE</text>
+  <text x="382" y="377" font-family="monospace" font-size="8" fill="#DC2626" text-anchor="middle">Encoder</text>
+  <rect x="348" y="383" width="68" height="14" rx="3" fill="#3b0f0f" stroke="#B91C1C" stroke-width="0.5"/>
+  <text x="382" y="394" font-family="monospace" font-size="8" fill="#FCA5A5" text-anchor="middle">Self-Attn</text>
+  <rect x="348" y="400" width="68" height="14" rx="3" fill="#3b0f0f" stroke="#B91C1C" stroke-width="0.5"/>
+  <text x="382" y="411" font-family="monospace" font-size="8" fill="#FCA5A5" text-anchor="middle">FFN</text>
+  <rect x="348" y="417" width="68" height="14" rx="3" fill="#3b0f0f" stroke="#B91C1C" stroke-width="0.5"/>
+  <text x="382" y="428" font-family="monospace" font-size="8" fill="#FCA5A5" text-anchor="middle">× 4 layers</text>
+  <text x="382" y="459" font-family="monospace" font-size="8" fill="#374151" text-anchor="middle">ET1…ETn</text>
+
+  <!-- ── Arrows from encoders to decoder ── -->
+  <line x1="428" y1="128" x2="490" y2="218" stroke="#3B82F6" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arr)"/>
+  <line x1="428" y1="198" x2="490" y2="228" stroke="#10B981" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arr)"/>
+  <line x1="428" y1="268" x2="490" y2="248" stroke="#8B5CF6" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arr)"/>
+  <line x1="428" y1="338" x2="490" y2="268" stroke="#F59E0B" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arr)"/>
+  <line x1="428" y1="408" x2="490" y2="288" stroke="#EF4444" stroke-width="1" stroke-opacity="0.5" marker-end="url(#arr)"/>
+
+  <!-- ── DECODER ── -->
+  <rect x="492" y="148" width="148" height="200" rx="10" fill="#111520" stroke="#818CF8" stroke-width="1.5"/>
+  <text x="566" y="170" font-family="monospace" font-size="10" fill="#A5B4FC" text-anchor="middle" font-weight="700">DECODER</text>
+  <text x="566" y="182" font-family="monospace" font-size="8" fill="#6366F1" text-anchor="middle">× 6 blocks</text>
+
+  <!-- decoder layers -->
+  <rect x="504" y="190" width="124" height="22" rx="4" fill="#1a1f3a" stroke="#4B5563" stroke-width="0.8"/>
+  <text x="566" y="205" font-family="monospace" font-size="9" fill="#C7D2FE" text-anchor="middle">Self-Attention (masked)</text>
+
+  <rect x="504" y="217" width="124" height="22" rx="4" fill="#1a1f3a" stroke="#4F46E5" stroke-width="1"/>
+  <text x="566" y="228" font-family="monospace" font-size="9" fill="#818CF8" text-anchor="middle" font-weight="700">✦ Cross-Attention</text>
+  <text x="566" y="238" font-family="monospace" font-size="7" fill="#4F46E5" text-anchor="middle">(attends all 5 encoder outputs)</text>
+
+  <rect x="504" y="244" width="124" height="22" rx="4" fill="#1a1f3a" stroke="#4B5563" stroke-width="0.8"/>
+  <text x="566" y="259" font-family="monospace" font-size="9" fill="#C7D2FE" text-anchor="middle">Feed-Forward (FFN)</text>
+
+  <!-- layer norm indicators -->
+  <line x1="510" y1="270" x2="622" y2="270" stroke="#374151" stroke-width="0.5" stroke-dasharray="3,3"/>
+  <text x="566" y="279" font-family="monospace" font-size="7" fill="#374151" text-anchor="middle">LayerNorm + Residual</text>
+
+  <rect x="504" y="284" width="124" height="22" rx="4" fill="#1a1f3a" stroke="#4B5563" stroke-width="0.8"/>
+  <text x="566" y="295" font-family="monospace" font-size="9" fill="#C7D2FE" text-anchor="middle">Repeat × N</text>
+  <text x="566" y="305" font-family="monospace" font-size="7" fill="#4B5563" text-anchor="middle">(6 decoder blocks total)</text>
+
+  <rect x="504" y="312" width="124" height="22" rx="4" fill="#162032" stroke="#2563EB" stroke-width="0.8"/>
+  <text x="566" y="327" font-family="monospace" font-size="9" fill="#93C5FD" text-anchor="middle">MLP Output Head</text>
+
+  <!-- ── Arrow decoder to output ── -->
+  <line x1="642" y1="248" x2="694" y2="248" stroke="#6B7280" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- ── OUTPUT ── -->
+  <rect x="696" y="178" width="130" height="140" rx="10" fill="#052e16" stroke="#10B981" stroke-width="1.5"/>
+  <text x="761" y="200" font-family="monospace" font-size="10" fill="#34D399" text-anchor="middle" font-weight="700">OUTPUT</text>
+  <text x="761" y="212" font-family="monospace" font-size="8" fill="#10B981" text-anchor="middle">Predicted Event t+1</text>
+
+  <line x1="730" y1="225" x2="792" y2="225" stroke="#1F2937" stroke-width="0.5"/>
+
+  <rect x="706" y="232" width="110" height="16" rx="3" fill="#053d1f" stroke="#047857" stroke-width="0.5"/>
+  <text x="761" y="244" font-family="monospace" font-size="8" fill="#6EE7B7" text-anchor="middle">EventType logits</text>
+
+  <rect x="706" y="252" width="110" height="16" rx="3" fill="#053d1f" stroke="#047857" stroke-width="0.5"/>
+  <text x="761" y="264" font-family="monospace" font-size="8" fill="#6EE7B7" text-anchor="middle">Actor logits</text>
+
+  <rect x="706" y="272" width="110" height="16" rx="3" fill="#053d1f" stroke="#047857" stroke-width="0.5"/>
+  <text x="761" y="284" font-family="monospace" font-size="8" fill="#6EE7B7" text-anchor="middle">Location logits</text>
+
+  <rect x="706" y="292" width="110" height="16" rx="3" fill="#053d1f" stroke="#047857" stroke-width="0.5"/>
+  <text x="761" y="304" font-family="monospace" font-size="8" fill="#6EE7B7" text-anchor="middle">JobCode logits</text>
+
+  <text x="761" y="326" font-family="monospace" font-size="8" fill="#4B5563" text-anchor="middle">autoregressive</text>
+
+  <!-- Autoregressive feedback arrow -->
+  <path d="M 761 320 Q 761 480 430 480 Q 200 480 200 400" fill="none" stroke="#1F2937" stroke-width="1" stroke-dasharray="4,4" marker-end="url(#arr)"/>
+  <text x="480" y="493" font-family="monospace" font-size="9" fill="#374151" text-anchor="middle">autoregressive: generated tokens fed back as next input</text>
+
+</svg>
